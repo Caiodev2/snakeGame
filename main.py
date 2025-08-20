@@ -1,5 +1,4 @@
 import pygame
-import random
 from bibFuncoes import gameOver  
 from bibFuncoes import nova_maca
 
@@ -60,13 +59,13 @@ while controlador:
             controlador = False
 
         if acao.type == pygame.KEYDOWN:
-            if acao.key == pygame.K_UP:
+            if acao.key == pygame.K_UP and movimento != "baixo":
                 movimento = "cima"
-            elif acao.key == pygame.K_DOWN:
+            elif acao.key == pygame.K_DOWN and movimento != "cima":
                 movimento = "baixo"
-            elif acao.key == pygame.K_LEFT:
+            elif acao.key == pygame.K_LEFT and movimento != "direita":
                 movimento = "esquerda"
-            elif acao.key == pygame.K_RIGHT:
+            elif acao.key == pygame.K_RIGHT and movimento != "esquerda":
                 movimento = "direita"
 
     # movimento ou game over

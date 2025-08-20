@@ -1,4 +1,3 @@
-import pygame
 import random
 
 def gameOver(x, y, largura, altura, largura_tela=640, altura_tela=480):
