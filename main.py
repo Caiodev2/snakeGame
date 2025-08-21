@@ -9,14 +9,21 @@ BRANCO = (255, 255, 255)
 VERMELHO = (255, 0, 0)
 VERDE = (0, 255, 0)
 
-#pontuacao
-pontos = 0
+
+
+
 #iniciando pygame
 pygame.init()
 
+
+#pontuacao
+pontos = 0
+
+
 # configracao da tela
-tela_w, tela_h = 640, 480
-GRID = 20  # grade para sincronizar com cobra e maçã
+tela_w = 640
+tela_h = 480
+GRID = 20  # grade é 20 ---> a área de cada bloco da cobra é 20m^2
 tela = pygame.display.set_mode((tela_w, tela_h))
 pygame.display.set_caption("Jogo da cobra")
 
@@ -32,8 +39,8 @@ fontePontos = pygame.font.SysFont(None, 25)
 textoPontos = fontePontos.render(f"PONTOS: {pontos}",True, BRANCO)
 
 # posição centralizada dos textos 
-go_text_x = (tela_w - txtGamerOver_w) // 2
-go_text_y = (tela_h - txtGamerOver_h) // 2
+centro_texto_x = (tela_w - txtGamerOver_w) // 2
+centro_texto_y = (tela_h - txtGamerOver_h) // 2
 
 
 
@@ -41,8 +48,8 @@ go_text_y = (tela_h - txtGamerOver_h) // 2
 cordX = (tela_w // GRID // 2) * GRID
 cordY = (tela_h // GRID // 2) * GRID
 largura, altura = GRID, GRID
-movimento = "direita"
-velocidade = GRID  # sincronizando a velocidade
+movimento = "direita" #começar sempre na direita
+velocidade = GRID 
 
 
 macaX, macaY = nova_maca()
@@ -53,6 +60,7 @@ clock = pygame.time.Clock()
 #main
 controlador = True
 while controlador:
+
     # eventos
     for acao in pygame.event.get():
         if acao.type == pygame.QUIT:
@@ -78,11 +86,12 @@ while controlador:
             cordX -= velocidade
         elif movimento == "direita":
             cordX += velocidade
+
     else:
         # tela de game over + espera por R
         tela.fill(PRETO)
-        tela.blit(textoGamerOver, [go_text_x, go_text_y])
-        tela.blit(textoPressioneR, [go_text_x, go_text_y + 60])
+        tela.blit(textoGamerOver, [centro_texto_x, centro_texto_y])
+        tela.blit(textoPressioneR, [centro_texto_x, centro_texto_y + 60])
         pygame.display.flip()
 
         esperando = True
@@ -101,7 +110,7 @@ while controlador:
 
 
     # colisão com a maçã 
-    if cordX == macaX and cordY == macaY:
+    if (cordX == macaX) and (cordY == macaY):
         macaX, macaY = nova_maca()
         pontos +=1
 
@@ -111,11 +120,11 @@ while controlador:
     pygame.draw.ellipse(tela, VERMELHO, [macaX, macaY, GRID, GRID])     # maçã
 
     textoPontos = fontePontos.render(f"PONTOS: {pontos}",True, BRANCO)
-    tela.blit(textoPontos,[go_text_x - 180,go_text_y -220]) #320 240 #texto para pontos
+    tela.blit(textoPontos,[centro_texto_x - 180,centro_texto_y -220]) #320 240 #texto para pontos
 
 
     pygame.display.flip()
 
-    clock.tick(10)  # 10 “passos” por segundo (snake-like)
+    clock.tick(10)  # basicamente nosso fps
 
 pygame.quit()
