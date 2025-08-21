@@ -11,10 +11,10 @@ def nova_maca(GRID = 20,tela_w = 640, tela_h = 480):
     y = random.randrange(0, tela_h - GRID, GRID)
     return x, y
 
-def colisao_cobra(c):
-   if len(c) < 2:
+def colisao_cobra(segmentoCobra):
+   if len(segmentoCobra) < 2:
        return False
-   cabeca = c[0]
-   corpo = c[1:]
+   cabeca = segmentoCobra[0]
+   corpo = segmentoCobra[1:]
 
    return cabeca in corpo
