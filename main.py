@@ -4,7 +4,7 @@ from bibFuncoes import nova_maca
 from bibFuncoes import colisao_cobra
 
 
-#  Cores 
+# Cores 
 PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
 VERMELHO = (255, 0, 0)
@@ -21,7 +21,7 @@ pontos = 0
 # configracao da tela
 tela_w = 640
 tela_h = 480
-GRID = 20  # grade é 20 ---> a área de cada bloco da cobra é 20m^2
+GRID = 20 
 tela = pygame.display.set_mode((tela_w, tela_h))
 pygame.display.set_caption("Jogo da cobra")
 
@@ -49,20 +49,21 @@ largura, altura = GRID, GRID
 movimento = "direita" #começar sempre na direita
 velocidade = GRID 
 
+
+#cobra estado inicial
 cobra = [[cordX,cordY]]
 tamanho_cobra = 1
 
 
 macaX, macaY = nova_maca()
-
 clock = pygame.time.Clock()
 
 
-#main
+#--------------Main---------------
 controlador = True
 while controlador:
 
-    # eventos
+    #eventos das teclas
     for acao in pygame.event.get():
         if acao.type == pygame.QUIT:
             controlador = False
@@ -77,7 +78,7 @@ while controlador:
             elif acao.key == pygame.K_RIGHT and movimento != "esquerda":
                 movimento = "direita"
 
-    # movimento ou game over
+    #movimento ou game over
     print(colisao_borda(cordX, cordY, largura, altura))
     if not colisao_borda(cordX, cordY, largura, altura) and not colisao_cobra(cobra):
         if movimento == "cima":
@@ -117,29 +118,30 @@ while controlador:
                     esperando = False
 
 
-    
+    #crescer conforme come a maçã
     if len(cobra) > tamanho_cobra:
         del cobra[0]
 
-    # colisão com a maçã 
+    #colisão com a maçã 
     if (cordX == macaX) and (cordY == macaY):
         macaX, macaY = nova_maca()
         pontos +=1
         tamanho_cobra +=1
 
-    # desenho 
+    #desenho
     tela.fill(PRETO)
     print(cobra)
+
+    #desenhando cada segmento da cobra
     for segmento in cobra:
-        pygame.draw.rect(tela, VERDE, [segmento[0], segmento[1], largura, altura])      # cobra
-    pygame.draw.ellipse(tela, VERMELHO, [macaX, macaY, GRID, GRID])     # maçã
+        pygame.draw.rect(tela, VERDE, [segmento[0], segmento[1], largura, altura])
+
+    pygame.draw.ellipse(tela, VERMELHO, [macaX, macaY, GRID, GRID])# maçã
 
     textoPontos = fontePontos.render(f"PONTOS: {pontos}",True, BRANCO)
-    tela.blit(textoPontos,[centro_texto_x - 180,centro_texto_y -220]) #320 240 #texto para pontos
-
-
+    tela.blit(textoPontos,[centro_texto_x - 180,centro_texto_y -220]) #x=320 y=240
     pygame.display.flip()
 
-    clock.tick(10)  # basicamente nosso fps
+    clock.tick(10)  #fps
 
 pygame.quit()
