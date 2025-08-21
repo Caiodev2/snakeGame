@@ -1,6 +1,7 @@
 import pygame
-from bibFuncoes import gameOver  
+from bibFuncoes import colisao_borda  
 from bibFuncoes import nova_maca
+from bibFuncoes import colisao_cobra
 
 
 #  Cores 
@@ -8,9 +9,6 @@ PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
 VERMELHO = (255, 0, 0)
 VERDE = (0, 255, 0)
-
-
-
 
 #iniciando pygame
 pygame.init()
@@ -51,6 +49,9 @@ largura, altura = GRID, GRID
 movimento = "direita" #começar sempre na direita
 velocidade = GRID 
 
+cobra = [[cordX,cordY]]
+tamanho_cobra = 1
+
 
 macaX, macaY = nova_maca()
 
@@ -77,7 +78,8 @@ while controlador:
                 movimento = "direita"
 
     # movimento ou game over
-    if not gameOver(cordX, cordY, largura, altura):
+    print(colisao_borda(cordX, cordY, largura, altura))
+    if not colisao_borda(cordX, cordY, largura, altura) and not colisao_cobra(cobra):
         if movimento == "cima":
             cordY -= velocidade
         elif movimento == "baixo":
@@ -86,7 +88,8 @@ while controlador:
             cordX -= velocidade
         elif movimento == "direita":
             cordX += velocidade
-
+        cobra.append([cordX, cordY])
+        
     else:
         # tela de game over + espera por R
         tela.fill(PRETO)
@@ -96,6 +99,7 @@ while controlador:
 
         esperando = True
         while esperando:
+
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
                     controlador = False
@@ -106,17 +110,28 @@ while controlador:
                     cordY = (tela_h // GRID // 2) * GRID
                     movimento = "direita"
                     macaX, macaY = nova_maca()
+                    tamanho_cobra = 1
+                    cobra = []
+                    pontos = 0
+
                     esperando = False
 
+
+    
+    if len(cobra) > tamanho_cobra:
+        del cobra[0]
 
     # colisão com a maçã 
     if (cordX == macaX) and (cordY == macaY):
         macaX, macaY = nova_maca()
         pontos +=1
+        tamanho_cobra +=1
 
     # desenho 
     tela.fill(PRETO)
-    pygame.draw.rect(tela, VERDE, [cordX, cordY, largura, altura])      # cobra
+    print(cobra)
+    for segmento in cobra:
+        pygame.draw.rect(tela, VERDE, [segmento[0], segmento[1], largura, altura])      # cobra
     pygame.draw.ellipse(tela, VERMELHO, [macaX, macaY, GRID, GRID])     # maçã
 
     textoPontos = fontePontos.render(f"PONTOS: {pontos}",True, BRANCO)
