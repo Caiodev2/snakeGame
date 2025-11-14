@@ -4,7 +4,7 @@ Este é um projeto do clássico "Snake Game" (Jogo da Cobrinha) desenvolvido em 
 
 O código é intencionalmente claro e dividido em um arquivo principal (para o loop do jogo) e um arquivo de biblioteca (`bibFuncoes.py`) para modularizar as funções de lógica.
 
-## ✨ Funcionalidades
+##  Funcionalidades
 
 * Movimentação da cobra baseada em grade (grid).
 * A cobra cresce ao comer uma fruta.
@@ -33,7 +33,7 @@ O código é intencionalmente claro e dividido em um arquivo principal (para o l
     pip install pygame
     ```
 
-## 🚀 Como Executar
+## Como Executar
 
 Com o Pygame instalado e os **dois arquivos** (`snake_game.py` e `bibFuncoes.py`) no mesmo diretório, execute o arquivo principal:
 
